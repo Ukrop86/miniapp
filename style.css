@@ -1,0 +1,129 @@
+body {
+    margin: 0;
+    font-family: 'Patrick Hand', cursive; /* Встановлюємо шрифт Patrick Hand */
+    background-color: #282c34; /* Темний фон */
+    color: #ffffff; /* Білий текст для контрасту */
+    box-sizing: border-box;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    padding: 20px; /* Відступи з усіх сторін */
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.title {
+    font-size: 36px;
+    margin: 20px 0;
+    color: #ffcc00; /* Яскравий колір заголовка */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); /* Тінь для заголовка */
+    font-weight: normal; /* Змінюємо товщину шрифту для заголовка */
+}
+
+.box {
+    width: calc(100% - 40px); /* Ширина блоку з урахуванням бокових відступів */
+    padding: 20px;
+    margin-bottom: 20px; /* Відступ між віконечками по висоті */
+    background-color: #444851; /* Темно-сірий фон віконечка */
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6); /* Тінь для віконечка */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    position: relative; /* Відносне позиціонування для розташування псевдоелементів */
+    color: #ffffff; /* Білий текст */
+    overflow: hidden; /* Приховує текст, що виходить за межі */
+    border: 2px solid #ffcc00; /* Яскравий бордер */
+    font-size: 22px; /* Розмір шрифту, щоб він був трохи більший */
+    font-weight: normal; /* Товщина шрифту для віконечка */
+}
+
+.box:last-child {
+    margin-bottom: 0;
+}
+
+.box.expanded {
+    height: auto; /* Автоматична висота при розширенні */
+    padding: 25px; /* Додано відступ всередині розширеного віконечка */
+    background-color: #555b60; /* Зміна фону при розширенні */
+}
+
+.box-content {
+    display: none; /* Приховуємо додатковий текст за замовчуванням */
+    margin-top: 20px; /* Збільшено відступ між текстом та верхньою частиною блоку */
+    font-size: 16px; /* Збільшення розміру шрифту для додаткового тексту */
+    font-weight: normal; /* Товщина шрифту для додаткового тексту */
+    text-align: left; /* Вирівнюємо текст по лівому краю */
+}
+
+.box.expanded .box-content {
+    display: block; /* Показуємо додатковий текст при розширенні */
+    font-size: 18px; /* Збільшення розміру шрифту */
+    color: #ffffff; /* Білий текст */
+    text-align: justify; /* Вирівнюємо текст по обидві сторони */
+    margin-bottom: 40px; /* Збільшено відступ знизу для розширеного тексту */
+}
+
+.box::before {
+    content: 'Докладніше...';
+    font-size: 14px; /* Розмір шрифту для "Докладніше..." */
+    color: #ffcc00; /* Яскравий колір */
+    position: absolute;
+    bottom: 10px; /* Відступ від нижнього краю */
+    right: 10px; /* Відступ від правого краю */
+    transition: opacity 0.3s ease; /* Плавне зникнення */
+}
+
+.box.expanded::before {
+    opacity: 0; /* Приховуємо текст при розширенні */
+}
+
+.icons {
+    position: absolute;
+    bottom: 10px; /* Відступ від нижнього краю */
+    left: 10px; /* Відступ від лівого краю */
+    display: flex;
+    gap: 6px; /* Відступ між іконками */
+    align-items: center; /* Центруємо іконки по вертикалі */
+}
+
+.icon-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 2px; /* Відступ між іконкою та рахунком */
+}
+
+.icons i {
+    font-size: 16px; /* Розмір іконок */
+    cursor: pointer; /* Змінюємо курсор при наведенні */
+}
+.count {
+    font-size: 14px; /* Зменшити розмір шрифту для цифр біля іконок */
+}
+.app-link {
+    display: none; /* Сховати посилання за замовчуванням */
+    position: absolute;
+    bottom: 10px; /* Відступ від нижнього краю */
+    right: 10px; /* Відступ від правого краю */
+    background-color: #ffcc00; /* Фон посилання */
+    color: #000000; /* Колір тексту */
+    padding: 5px 10px; /* Внутрішні відступи для посилання */
+    border-radius: 5px; /* Закруглення країв посилання */
+    text-decoration: none; /* Убираємо підкреслення */
+    font-size: 14px; /* Розмір шрифту */
+    font-weight: normal; /* Товщина шрифту */
+    transition: background-color 0.3s ease; /* Плавна зміна кольору фону */
+}
+
+.box.expanded .app-link {
+    display: block; /* Показати посилання при розширенні */
+}
+
+.app-link:hover {
+    background-color: #ffffff; /* Колір фону при наведенні */
+    color: #000000; /* Колір тексту при наведенні */
+}
