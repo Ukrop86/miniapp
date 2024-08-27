@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Mini App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="title">Рейтинг додатків</div>
+        <div class="box" onclick="toggleBox(this)">
+            Hot Wallet
+            <div class="box-content">
+                Hot Wallet крипто гаманець в Telegram. HOT - це токен екосистеми NEAR, 
+                який використовується для оплати комісій, голосування та інших функцій проекту. 
+                Токен ще не торгується на біржах тому зараз його можна видобувати абсолютно безкоштовно.
+                <a class="app-link" href="https://example.com/hot-wallet" target="_blank" onclick="event.stopPropagation();">Перейти до Апп</a>
+            </div>
+            <div class="icons">
+                <div class="icon-wrapper">
+                    <i class="like-icon" onclick="updateCount(event, 'like')">👍</i>
+                    <span class="count like-count">0</span>
+                </div>
+                <div class="icon-wrapper">
+                    <i class="dislike-icon" onclick="updateCount(event, 'dislike')">👎</i>
+                    <span class="count dislike-count">0</span>
+                </div>
+                <div class="icon-wrapper">
+                    <i class="neutral-icon" onclick="updateCount(event, 'neutral')">😐</i>
+                    <span class="count neutral-count">0</span>
+                </div>
+            </div>
+        </div>
+        <div class="box" onclick="toggleBox(this)">
+            Hamster
+            <div class="box-content">
+                Hamster Kombat — криптовалютна гра в жанрі клікера, заснована всередині Telegram на блокчейні TON
+                <a class="app-link" href="https://example.com/hamster" target="_blank" onclick="event.stopPropagation();">Перейти до Апп</a>
+            </div>
+            <div class="icons">
+                <div class="icon-wrapper">
+                    <i class="like-icon" onclick="updateCount(event, 'like')">👍</i>
+                    <span class="count like-count">0</span>
+                </div>
+                <div class="icon-wrapper">
+                    <i class="dislike-icon" onclick="updateCount(event, 'dislike')">👎</i>
+                    <span class="count dislike-count">0</span>
+                </div>
+                <div class="icon-wrapper">
+                    <i class="neutral-icon" onclick="updateCount(event, 'neutral')">😐</i>
+                    <span class="count neutral-count">0</span>
+                </div>
+            </div>
+        </div>
+        <div class="box" onclick="toggleBox(this)">
+            Dogs
+            <div class="box-content">
+                DOGS - це міні-додаток в Telegram, який з'явився на тлі популярності інших клік-ігор, 
+              таких як Notcoin, TapSwap та Hamster Kombat. Однак у DOGS не потрібно активно натискати 
+              на екран — досить просто увійти до гри, щоб отримати внутрішньоігрову валюту.
+                <a class="app-link" href="https://example.com/dogs" target="_blank" onclick="event.stopPropagation();">Перейти до Апп</a>
+            </div>
+            <div class="icons">
+                <div class="icon-wrapper">
+                    <i class="like-icon" onclick="updateCount(event, 'like')">👍</i>
+                    <span class="count like-count">0</span>
+                </div>
+                <div class="icon-wrapper">
+                    <i class="dislike-icon" onclick="updateCount(event, 'dislike')">👎</i>
+                    <span class="count dislike-count">0</span>
+                </div>
+                <div class="icon-wrapper">
+                    <i class="neutral-icon" onclick="updateCount(event, 'neutral')">😐</i>
+                    <span class="count neutral-count">0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>
