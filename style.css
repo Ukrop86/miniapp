@@ -1,99 +1,101 @@
 body {
-    margin: 0;
-    /* font-family: 'Patrick Hand', cursive; /* Встановлюємо шрифт Patrick Hand */
+    margin: 0; /* Видаляємо відступи за замовчуванням */
+    font-family: 'Poppins', sans-serif; /* Встановлюємо шрифт Poppins */
     background-color: #282c34; /* Темний фон */
     color: #ffffff; /* Білий текст для контрасту */
-    box-sizing: border-box;
+    box-sizing: border-box; /* Включаємо бордери та паддінги в розмір елементів */
 }
 
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100vh;
+    display: flex; /* Використовуємо flexbox для розташування елементів */
+    flex-direction: column; /* Розташовуємо елементи вертикально */
+    align-items: center; /* Центруємо елементи по горизонталі */
+    height: 100vh; /* Висота контейнера на всю висоту вікна браузера */
     padding: 20px; /* Відступи з усіх сторін */
-    box-sizing: border-box;
-    overflow-y: auto;
+    box-sizing: border-box; /* Включаємо паддінги та бордери в загальний розмір контейнера */
+    overflow-y: auto; /* Додаємо вертикальне прокручування, якщо потрібно */
 }
 
 .title {
-    font-size: 36px;
-    margin: 20px 0;
+    font-size: 36px; /* Розмір шрифту для заголовка */
+    margin: 20px 0; /* Відступи зверху та знизу */
     color: #ffcc00; /* Яскравий колір заголовка */
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); /* Тінь для заголовка */
-    font-weight: normal; /* Змінюємо товщину шрифту для заголовка */
+    font-weight: normal; /* Товщина шрифту для заголовка */
 }
 
 .box {
     width: calc(100% - 40px); /* Ширина блоку з урахуванням бокових відступів */
-    padding: 20px;
-    margin-bottom: 20px; /* Відступ між віконечками по висоті */
-    background-color: #444851; /* Темно-сірий фон віконечка */
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6); /* Тінь для віконечка */
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-align: center;
+    padding: 20px; /* Внутрішні відступи всередині блоку */
+    margin-bottom: 20px; /* Відступ між блоками по вертикалі */
+    background-color: #444851; /* Темно-сірий фон блоку */
+    border-radius: 12px; /* Закруглені кути блоку */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6); /* Тінь для блоку */
+    cursor: pointer; /* Змінюємо курсор при наведенні */
+    transition: all 0.3s ease; /* Плавний перехід для всіх властивостей */
+    text-align: center; /* Вирівнюємо текст по центру */
     position: relative; /* Відносне позиціонування для розташування псевдоелементів */
     color: #ffffff; /* Білий текст */
-    overflow: hidden; /* Приховує текст, що виходить за межі */
+    overflow: hidden; /* Приховуємо текст, що виходить за межі блоку */
     border: 2px solid #ffcc00; /* Яскравий бордер */
-    font-size: 22px; /* Розмір шрифту, щоб він був трохи більший */
-    font-weight: normal; /* Товщина шрифту для віконечка */
+    font-size: 22px; /* Розмір шрифту для тексту в блоці */
+    font-weight: normal; /* Товщина шрифту для тексту */
+    padding-bottom: 30px; /* Внутрішній відступ знизу */
 }
 
 .box:last-child {
-    margin-bottom: 0;
+    margin-bottom: 0; /* Прибираємо нижній відступ для останнього блоку */
 }
 
 .box.expanded {
     height: auto; /* Автоматична висота при розширенні */
-    padding: 25px; /* Додано відступ всередині розширеного віконечка */
+    padding: 25px; /* Додаткові відступи всередині розгорнутого блоку */
     background-color: #555b60; /* Зміна фону при розширенні */
 }
 
 .box-content {
     display: none; /* Приховуємо додатковий текст за замовчуванням */
-    margin-top: 20px; /* Збільшено відступ між текстом та верхньою частиною блоку */
-    font-size: 16px; /* Збільшення розміру шрифту для додаткового тексту */
+    margin-top: 20px; /* Відступ зверху додаткового тексту */
+    font-size: 16px; /* Розмір шрифту для додаткового тексту */
     font-weight: normal; /* Товщина шрифту для додаткового тексту */
     text-align: left; /* Вирівнюємо текст по лівому краю */
+    margin-bottom: 30px; /* Відступ знизу додаткового тексту */
 }
 
 .box.expanded .box-content {
     display: block; /* Показуємо додатковий текст при розширенні */
-    font-size: 18px; /* Збільшення розміру шрифту */
+    font-size: 18px; /* Збільшення розміру шрифту для розширеного тексту */
     color: #ffffff; /* Білий текст */
-    text-align: justify; /* Вирівнюємо текст по обидві сторони */
-    margin-bottom: 40px; /* Збільшено відступ знизу для розширеного тексту */
+    text-align: justify; /* Вирівнюємо текст по обидва боки */
+    margin-bottom: 40px; /* Збільшення відступу знизу для розширеного тексту */
 }
 
 .box::before {
-    content: 'Докладніше...';
-    font-size: 14px; /* Розмір шрифту для "Докладніше..." */
-    color: #ffcc00; /* Яскравий колір */
-    position: absolute;
-    bottom: 10px; /* Відступ від нижнього краю */
-    right: 10px; /* Відступ від правого краю */
-    transition: opacity 0.3s ease; /* Плавне зникнення */
+    content: 'Докладніше...'; /* Текст для псевдоелемента */
+    font-size: 14px; /* Розмір шрифту для псевдоелемента */
+    color: #ffcc00; /* Яскравий колір для псевдоелемента */
+    position: absolute; /* Абсолютне позиціонування для псевдоелемента */
+    bottom: 10px; /* Відступ від нижнього краю блоку */
+    right: 10px; /* Відступ від правого краю блоку */
+    transition: opacity 0.3s ease; /* Плавна зміна прозорості */
 }
 
 .box.expanded::before {
-    opacity: 0; /* Приховуємо текст при розширенні */
+    opacity: 0; /* Приховуємо псевдоелемент при розширенні */
 }
 
 .icons {
-    position: absolute;
+    position: absolute; /* Абсолютне позиціонування для іконок */
     bottom: 10px; /* Відступ від нижнього краю */
     left: 10px; /* Відступ від лівого краю */
-    display: flex;
+    display: flex; /* Використовуємо flexbox для розташування іконок */
     gap: 6px; /* Відступ між іконками */
     align-items: center; /* Центруємо іконки по вертикалі */
 }
 
 .icon-wrapper {
-    display: flex;
-    align-items: center;
+    display: flex; /* Використовуємо flexbox для розташування іконки та рахунку */
+    align-items: center; /* Центруємо іконку та рахунок по вертикалі */
     gap: 2px; /* Відступ між іконкою та рахунком */
 }
 
@@ -101,22 +103,24 @@ body {
     font-size: 16px; /* Розмір іконок */
     cursor: pointer; /* Змінюємо курсор при наведенні */
 }
+
 .count {
-    font-size: 14px; /* Зменшити розмір шрифту для цифр біля іконок */
+    font-size: 14px; /* Розмір шрифту для рахунків біля іконок */
 }
+
 .app-link {
     display: none; /* Сховати посилання за замовчуванням */
-    position: absolute;
+    position: absolute; /* Абсолютне позиціонування для посилання */
     bottom: 10px; /* Відступ від нижнього краю */
     right: 10px; /* Відступ від правого краю */
     background-color: #ffcc00; /* Фон посилання */
     color: #000000; /* Колір тексту */
     padding: 5px 10px; /* Внутрішні відступи для посилання */
-    border-radius: 5px; /* Закруглення країв посилання */
+    border-radius: 5px; /* Закруглені кути посилання */
     text-decoration: none; /* Убираємо підкреслення */
     font-size: 14px; /* Розмір шрифту */
     font-weight: normal; /* Товщина шрифту */
-    transition: background-color 0.3s ease; /* Плавна зміна кольору фону */
+    transition: background-color 0.3s ease; /* Плавна зміна кольору фону при наведенні */
 }
 
 .box.expanded .app-link {
