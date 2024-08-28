@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Telegram Mini App</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
+        <!-- Вміст вашого проекту -->
         <div class="title">Рейтинг додатків</div>
         <div class="box" onclick="toggleBox(this)">
             Hot Wallet
@@ -36,7 +37,7 @@
         <div class="box" onclick="toggleBox(this)">
             Hamster
             <div class="box-content">
-                Hamster Kombat — криптовалютна гра в жанрі клікера, заснована всередині Telegram на блокчейні TON
+                Прощання відповідно
                 <a class="app-link" href="https://example.com/hamster" target="_blank" onclick="event.stopPropagation();">Перейти до Апп</a>
             </div>
             <div class="icons">
@@ -57,9 +58,7 @@
         <div class="box" onclick="toggleBox(this)">
             Dogs
             <div class="box-content">
-                DOGS - це міні-додаток в Telegram, який з'явився на тлі популярності інших клік-ігор, 
-              таких як Notcoin, TapSwap та Hamster Kombat. Однак у DOGS не потрібно активно натискати 
-              на екран — досить просто увійти до гри, щоб отримати внутрішньоігрову валюту.
+                Some dog content
                 <a class="app-link" href="https://example.com/dogs" target="_blank" onclick="event.stopPropagation();">Перейти до Апп</a>
             </div>
             <div class="icons">
@@ -78,6 +77,31 @@
             </div>
         </div>
     </div>
+
+   <!-- Рядок з іконками -->
+<div class="bottom-nav">
+    <a href="#home" class="nav-item">
+        <i class="icon fas fa-home"></i>
+        <span>Домашня сторінка</span>
+    </a>
+    <a href="#new" class="nav-item">
+        <i class="icon fas fa-star"></i>
+        <span>Новинки</span>
+    </a>
+    <a href="#my" class="nav-item">
+        <i class="icon fas fa-user"></i>
+        <span>Мої проекти</span>
+    </a>
+    <a href="#referrals" class="nav-item">
+        <i class="icon fas fa-users"></i>
+        <span>Реферали</span>
+    </a>
+</div>
+
+<!-- Не забудьте підключити Font Awesome у <head> вашого HTML документа -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
     <script src="main.js"></script>
 </body>
 </html>
