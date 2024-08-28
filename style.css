@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    font-family: 'Patrick Hand', cursive; /* Встановлюємо шрифт Patrick Hand */
+    /* font-family: 'Patrick Hand', cursive; /* Встановлюємо шрифт Patrick Hand */
     background-color: #282c34; /* Темний фон */
     color: #ffffff; /* Білий текст для контрасту */
     box-sizing: border-box;
