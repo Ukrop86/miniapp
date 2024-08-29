@@ -10,16 +10,18 @@
     <link rel="stylesheet" href="icons.css">
     <link rel="stylesheet" href="bottom-nav.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js"></script>
 </head>
 <body>
     <div class="container">
         <div id="home" class="tab-content">
-            <div class="title">Топ додатків</div>
-          
+            <div class="title">Рейтинг додатків</div>
             <div class="box">
-                Hot Wallet
+                Hot Wallet 
                 <div class="box-content">
-                    Hot Wallet крипто гаманець в Telegram. HOT - це токен екосистеми NEAR, 
+                    Hot Wallet крипто гаманець в Telegram. HOT - це токен екосистеми NEAR,  
                     який використовується для оплати комісій, голосування та інших функцій проекту. 
                     Токен ще не торгується на біржах тому зараз його можна видобувати абсолютно безкоштовно.
                     <a class="app-link" href="https://example.com/hot-wallet" target="_blank" onclick="event.stopPropagation();">Перейти до Апп</a>
@@ -149,6 +151,11 @@
                     </div>
                 </div>
             </div>
+          
+          
+          
+          
+          
         </div>
     
         <div id="new" class="tab-content" style="display: none;">
@@ -190,7 +197,13 @@
         </a>
     </div>
 
-    <script type="module" src="main.js"></script>
+  
+   <script type="module" src="main.js"></script>
+     
+    
+  
+  
+  
     <script>
         function showTab(tabId) {
             const tabs = document.querySelectorAll('.tab-content');
@@ -203,5 +216,10 @@
             });
         }
     </script>
+  
+
+  
+  
+  
 </body>
 </html>
