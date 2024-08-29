@@ -51,9 +51,8 @@
     text-align: center;
     position: relative;
     color: #ffffff;
-    overflow: hidden;
     font-size: 22px;
     font-weight: normal;
     padding-bottom: 30px;
-  overflow-y: auto;
+    overflow-y: auto;
 }
