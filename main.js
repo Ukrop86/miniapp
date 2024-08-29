@@ -97,3 +97,14 @@ async function initCounts() {
 document.addEventListener('DOMContentLoaded', initCounts);
 
 
+document.querySelectorAll('.box').forEach(box => {
+    box.addEventListener('click', () => toggleBox(box));
+});
+
+
+
+document.querySelectorAll('.app-link').forEach(link => {
+    link.addEventListener('click', handleLinkClick);
+});
+
+
