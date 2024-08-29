@@ -1,6 +1,6 @@
 /* layout.css */
 .box {
-    width: calc(100% - 40px);
+    width: 100%;
     padding: 20px;
     margin-bottom: 20px;
     background-color: #444851;
