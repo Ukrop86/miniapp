@@ -1,96 +1,91 @@
 // main.js
 import { toggleBox, updateCount, handleLinkClick } from './utils.js';
+import { getDatabase, ref, set, get, update } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js';
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js';
+import { getAnalytics } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-analytics.js';
 
-const gistId = 'c68b6848d7e34bb08457728c28aa5dd2';  // Замініть на ваш Gist ID
-const githubToken = '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';  // Замініть на ваш GitHub токен
+// Ваші Firebase конфігурації
+const firebaseConfig = {
+    apiKey: "AIzaSyAYj1yAtKimTm7ym00Kk3AfH6stlkoTxS0",
+    authDomain: "like-counter-8cd29.firebaseapp.com",
+    databaseURL: "https://like-counter-8cd29-default-rtdb.firebaseio.com",
+    projectId: "like-counter-8cd29",
+    storageBucket: "like-counter-8cd29.appspot.com",
+    messagingSenderId: "403893805395",
+    appId: "1:403893805395:web:f7c9993ba0fb016a04c1a6",
+    measurementId: "G-451JTQES2S"
+};
 
-// Функція для завантаження лічильників з Gist
+// Ініціалізація Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const db = getDatabase(app);
+
 async function loadCounts() {
-    try {
-        const response = await fetch(`https://api.github.com/gists/${gistId}`, {
-            headers: {
-                'Authorization': `token ${githubToken}`
-            }
-        });
-        const data = await response.json();
-        const fileContent = JSON.parse(data.files['like-counts.json'].content);
-        return fileContent;
-    } catch (error) {
-        console.error('Error loading counts:', error);
+    const snapshot = await get(ref(db, 'counts/'));
+    if (snapshot.exists()) {
+        return snapshot.val();
+    } else {
         return {};
     }
 }
 
-// Функція для збереження лічильників у Gist
 async function saveCounts(counts) {
-    try {
-        await fetch(`https://api.github.com/gists/${gistId}`, {
-            method: 'PATCH',
-            headers: {
-                'Authorization': `token ${githubToken}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                files: {
-                    'like-counts.json': {
-                        content: JSON.stringify(counts)
-                    }
-                }
-            })
-        });
-    } catch (error) {
-        console.error('Error saving counts:', error);
-    }
+    await set(ref(db, 'counts/'), counts);
 }
 
 // Ініціалізація лічильників
 async function initCounts() {
     const counts = await loadCounts();
 
-    document.querySelectorAll('.like-icon').forEach((icon, index) => {
-        const countSpan = icon.nextElementSibling;
-        const countKey = `like${index}`;
-        countSpan.textContent = counts[countKey] || 0;
+    document.querySelectorAll('.box').forEach((box, index) => {
+        const likeSpan = box.querySelector('.like-count');
+        const dislikeSpan = box.querySelector('.dislike-count');
+        const neutralSpan = box.querySelector('.neutral-count');
 
-        icon.addEventListener('click', async function(event) {
+        const boxId = `box${index}`;
+        likeSpan.textContent = counts[`${boxId}_likes`] || 0;
+        dislikeSpan.textContent = counts[`${boxId}_dislikes`] || 0;
+        neutralSpan.textContent = counts[`${boxId}_neutrals`] || 0;
+
+        box.querySelector('.like-icon').addEventListener('click', async (event) => {
             event.stopPropagation();
-            let currentCount = parseInt(countSpan.textContent, 10);
-            currentCount++;
-            countSpan.textContent = currentCount;
-            counts[countKey] = currentCount;
+            const count = parseInt(likeSpan.textContent, 10) + 1;
+            likeSpan.textContent = count;
+            counts[`${boxId}_likes`] = count; 
+            await saveCounts(counts);
+        });
+
+        box.querySelector('.dislike-icon').addEventListener('click', async (event) => {
+            event.stopPropagation();
+            const count = parseInt(dislikeSpan.textContent, 10) + 1;
+            dislikeSpan.textContent = count;
+            counts[`${boxId}_dislikes`] = count;
+            await saveCounts(counts);
+        });
+
+        box.querySelector('.neutral-icon').addEventListener('click', async (event) => {
+            event.stopPropagation();
+            const count = parseInt(neutralSpan.textContent, 10) + 1;
+            neutralSpan.textContent = count;
+            counts[`${boxId}_neutrals`] = count;
             await saveCounts(counts);
         });
     });
 
-    document.querySelectorAll('.dislike-icon').forEach((icon, index) => {
-        const countSpan = icon.nextElementSibling;
-        const countKey = `dislike${index}`;
-        countSpan.textContent = counts[countKey] || 0;
+    sortBoxesByLikes();
+}
 
-        icon.addEventListener('click', async function(event) {
-            event.stopPropagation();
-            let currentCount = parseInt(countSpan.textContent, 10);
-            currentCount++;
-            countSpan.textContent = currentCount;
-            counts[countKey] = currentCount;
-            await saveCounts(counts);
-        });
+function sortBoxesByLikes() {
+    const boxes = Array.from(document.querySelectorAll('.box'));
+    boxes.sort((a, b) => {
+        const aLikes = parseInt(a.querySelector('.like-count').textContent, 10);
+        const bLikes = parseInt(b.querySelector('.like-count').textContent, 10);
+        return bLikes - aLikes;
     });
-
-    document.querySelectorAll('.neutral-icon').forEach((icon, index) => {
-        const countSpan = icon.nextElementSibling;
-        const countKey = `neutral${index}`;
-        countSpan.textContent = counts[countKey] || 0;
-
-        icon.addEventListener('click', async function(event) {
-            event.stopPropagation();
-            let currentCount = parseInt(countSpan.textContent, 10);
-            currentCount++;
-            countSpan.textContent = currentCount;
-            counts[countKey] = currentCount;
-            await saveCounts(counts);
-        });
-    });
+    
+    const container = document.querySelector('.tab-content');
+    boxes.forEach(box => container.appendChild(box));
 }
 
 // Виклик ініціалізації при завантаженні сторінки
@@ -106,5 +101,3 @@ document.querySelectorAll('.box').forEach(box => {
 document.querySelectorAll('.app-link').forEach(link => {
     link.addEventListener('click', handleLinkClick);
 });
-
-
