@@ -11,7 +11,6 @@
     text-align: center;
     position: relative;
     color: #ffffff;
-    overflow: hidden;
     border: 2px solid #ffcc00;
     font-size: 22px;
     font-weight: normal;
@@ -99,14 +98,9 @@
     text-align: center;
     position: relative;
     color: #ffffff;
-    overflow: hidden;
     font-size: 22px;
     font-weight: normal;
     padding-bottom: 30px;
-  overflow-y: auto;
-  border: 2px solid #ffcc00;
+    border: 2px solid #ffcc00;
 }
-/* Приховати полосу прокрутки для WebKit-браузерів */
-.tab-content::-webkit-scrollbar {
-    display: none; /* Приховує скролбар */
-}
+
