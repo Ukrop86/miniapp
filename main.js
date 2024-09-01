@@ -1,6 +1,5 @@
-// main.js
 import { toggleBox, updateCount, handleLinkClick } from './utils.js';
-import { getDatabase, ref, set, get, update } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js';
+import { getDatabase, ref, set, update, onValue } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js';
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js';
 import { getAnalytics } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-analytics.js';
 
@@ -21,61 +20,62 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getDatabase(app);
 
-async function loadCounts() {
-    const snapshot = await get(ref(db, 'counts/'));
-    if (snapshot.exists()) {
-        return snapshot.val();
-    } else {
-        return {};
-    }
+// Функція для оновлення лічильників у Firebase
+async function updateFirebaseCount(boxId, type, spanElement) {
+    const currentCount = parseInt(spanElement.textContent, 10);
+    const newCount = currentCount + 1;
+    
+    const countRef = ref(db, `counts/${boxId}_${type}`);
+    await set(countRef, newCount);
+    
+    // Сортуємо коробки після оновлення лічильника
+    sortBoxesByLikes();
 }
 
-async function saveCounts(counts) {
-    await set(ref(db, 'counts/'), counts);
-}
-
-// Ініціалізація лічильників
-async function initCounts() {
-    const counts = await loadCounts();
-
+// Функція ініціалізації лічильників
+function initCounts() {
     document.querySelectorAll('.box').forEach((box, index) => {
         const likeSpan = box.querySelector('.like-count');
         const dislikeSpan = box.querySelector('.dislike-count');
         const neutralSpan = box.querySelector('.neutral-count');
 
         const boxId = `box${index}`;
-        likeSpan.textContent = counts[`${boxId}_likes`] || 0;
-        dislikeSpan.textContent = counts[`${boxId}_dislikes`] || 0;
-        neutralSpan.textContent = counts[`${boxId}_neutrals`] || 0;
 
-        box.querySelector('.like-icon').addEventListener('click', async (event) => {
-            event.stopPropagation();
-            const count = parseInt(likeSpan.textContent, 10) + 1;
-            likeSpan.textContent = count;
-            counts[`${boxId}_likes`] = count; 
-            await saveCounts(counts);
+        // Підписка на зміни в базі даних для цього конкретного box
+        onValue(ref(db, `counts/${boxId}_likes`), (snapshot) => {
+            likeSpan.textContent = snapshot.exists() ? snapshot.val() : 0;
+            sortBoxesByLikes(); // Додаємо сортування при кожній зміні кількості лайків
         });
 
-        box.querySelector('.dislike-icon').addEventListener('click', async (event) => {
-            event.stopPropagation();
-            const count = parseInt(dislikeSpan.textContent, 10) + 1;
-            dislikeSpan.textContent = count;
-            counts[`${boxId}_dislikes`] = count;
-            await saveCounts(counts);
+        onValue(ref(db, `counts/${boxId}_dislikes`), (snapshot) => {
+            dislikeSpan.textContent = snapshot.exists() ? snapshot.val() : 0;
         });
 
-        box.querySelector('.neutral-icon').addEventListener('click', async (event) => {
+        onValue(ref(db, `counts/${boxId}_neutrals`), (snapshot) => {
+            neutralSpan.textContent = snapshot.exists() ? snapshot.val() : 0;
+        });
+
+        // Обробка кліків на іконки
+        box.querySelector('.like-icon').addEventListener('click', (event) => {
             event.stopPropagation();
-            const count = parseInt(neutralSpan.textContent, 10) + 1;
-            neutralSpan.textContent = count;
-            counts[`${boxId}_neutrals`] = count;
-            await saveCounts(counts);
+            updateFirebaseCount(boxId, 'likes', likeSpan);
+        });
+
+        box.querySelector('.dislike-icon').addEventListener('click', (event) => {
+            event.stopPropagation();
+            updateFirebaseCount(boxId, 'dislikes', dislikeSpan);
+        });
+
+        box.querySelector('.neutral-icon').addEventListener('click', (event) => {
+            event.stopPropagation();
+            updateFirebaseCount(boxId, 'neutrals', neutralSpan);
         });
     });
 
-    sortBoxesByLikes();
+    sortBoxesByLikes(); // Першочергове сортування при ініціалізації
 }
 
+// Сортування box за кількістю лайків
 function sortBoxesByLikes() {
     const boxes = Array.from(document.querySelectorAll('.box'));
     boxes.sort((a, b) => {
@@ -91,12 +91,9 @@ function sortBoxesByLikes() {
 // Виклик ініціалізації при завантаженні сторінки
 document.addEventListener('DOMContentLoaded', initCounts);
 
-
 document.querySelectorAll('.box').forEach(box => {
     box.addEventListener('click', () => toggleBox(box));
 });
-
-
 
 document.querySelectorAll('.app-link').forEach(link => {
     link.addEventListener('click', handleLinkClick);
