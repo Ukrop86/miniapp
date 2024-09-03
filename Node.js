@@ -6,7 +6,7 @@ const fetch = require('node-fetch'); // Не забудьте встановит
 
 const app = express();
 const port = 3000;
-const botToken = 'YOUR_TELEGRAM_BOT_TOKEN'; // Замініть на ваш токен
+const botToken = '7475830625:AAGuEX6UxNLwHe-yIgtyq1mtkKdKM25lzJs'; // Замініть на ваш токен
 
 app.use(bodyParser.json());
 
