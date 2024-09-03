@@ -10,38 +10,53 @@ const firebaseConfig = {
   measurementId: "G-QSR6SB6P8P"
 };
 
-// Ініціалізуйте Firebase
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+// Ініціалізація Firebase
+const app = firebase.initializeApp(firebaseConfig);
+const database = firebase.database(app);
 
-// Функція для збереження даних користувача у Firebase
-function saveUserData(userId, referralLink) {
-    db.ref('users/' + userId).set({
-        telegramId: userId,
-        referralLink: referralLink
-    }).then(() => {
-        console.log('Дані користувача успішно збережені');
-    }).catch((error) => {
-        console.error('Помилка при збереженні даних користувача:', error);
+function saveTelegramLogin() {
+    const userId = document.getElementById('userId').value;
+    const telegramLogin = document.getElementById('telegramLogin').value;
+    
+    if (!userId || !telegramLogin) {
+        alert('Please enter both User ID and Telegram Login');
+        return;
+    }
+
+    // Зберігаємо дані в Firebase
+    database.ref('referrals/' + userId).set({
+        telegramLogin: telegramLogin
+    }, (error) => {
+        if (error) {
+            alert('Failed to save data');
+        } else {
+            alert('Data saved successfully');
+            loadReferrals(); // Оновлюємо список рефералів
+        }
     });
 }
 
-// Функція для відображення реферального посилання
-function displayReferralLink() {
-    // Отримати ID користувача Telegram з параметрів URL або з іншого джерела
-    const params = new URLSearchParams(window.location.search);
-    const userId = params.get('id'); // Отримати ID з URL параметрів
+function loadReferrals() {
+    const referralList = document.getElementById('referralList');
+    referralList.innerHTML = ''; // Очищуємо попередні дані
 
-    if (userId) {
-        const referralLink = `https://example.com/referral/${userId}`;
-        document.getElementById('referral-link').innerText = `Ваше реферальне посилання: ${referralLink}`;
-
-        // Збережіть дані користувача у Firebase
-        saveUserData(userId, referralLink);
-    } else {
-        console.error('Не вдалося отримати ID користувача');
-    }
+    database.ref('referrals').once('value', (snapshot) => {
+        const referrals = snapshot.val();
+        if (referrals) {
+            for (const userId in referrals) {
+                const telegramLogin = referrals[userId].telegramLogin;
+                const listItem = document.createElement('li');
+                listItem.textContent = `User ID: ${userId}, Telegram Login: ${telegramLogin}`;
+                referralList.appendChild(listItem);
+            }
+        } else {
+            referralList.innerHTML = '<li>No referrals found</li>';
+        }
+    });
 }
+
+// Завантаження рефералів при завантаженні сторінки
+window.onload = loadReferrals;
 
 // Викликаємо функцію для відображення реферального посилання при завантаженні сторінки
 window.onload = displayReferralLink;
