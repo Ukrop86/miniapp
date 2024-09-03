@@ -1,14 +1,25 @@
-const http = require('http');
+// server.js
 
-const hostname = '127.0.0.1';
+const express = require('express');
+const bodyParser = require('body-parser');
+const fetch = require('node-fetch'); // Не забудьте встановити пакет
+
+const app = express();
 const port = 3000;
+const botToken = 'YOUR_TELEGRAM_BOT_TOKEN'; // Замініть на ваш токен
 
-const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello World\n');
+app.use(bodyParser.json());
+
+app.get('/getUpdates', async (req, res) => {
+    try {
+        const response = await fetch(`https://api.telegram.org/bot${botToken}/getUpdates`);
+        const data = await response.json();
+        res.json(data);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch updates' });
+    }
 });
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
 });
