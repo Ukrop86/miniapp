@@ -4,7 +4,7 @@ import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.0.2/
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.0.2/firebase-analytics.js";
 
 // Конфігурація Firebase для вашого веб-додатку
-const firebaseConfig = {
+var firebaseConfig = {
   apiKey: "AIzaSyBJSrSzrShQWN3CDYVVMYjzibQ1FgTDVO8",
   authDomain: "referals-b30ae.firebaseapp.com",
   databaseURL: "https://referals-b30ae-default-rtdb.firebaseio.com",
@@ -16,21 +16,15 @@ const firebaseConfig = {
 };
 
 // Ініціалізуйте Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const db = getDatabase(app);
+firebase.initializeApp(firebaseConfig);
+var database = firebase.database();
 
 // Функція для збереження даних користувача у Firebase
-async function saveUserData(userId, referralLink) {
-    try {
-        await set(ref(db, 'users/' + userId), {
-            telegramId: userId,
-            referralLink: referralLink
-        });
-        console.log('Дані користувача успішно збережені');
-    } catch (error) {
-        console.error('Помилка при збереженні даних користувача:', error);
-    }
+function saveUserData(userId, referralLink) {
+    database.ref('users/' + userId).set({
+        telegramId: userId,
+        referralLink: referralLink
+    });
 }
 
 // Функція для відображення реферального посилання
