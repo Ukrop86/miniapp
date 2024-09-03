@@ -19,7 +19,7 @@ const database = firebase.database();
 // Функція для отримання даних користувача
 function getUserInfo() {
     // Замість 'YOUR_TELEGRAM_BOT_TOKEN' використовуйте ваш токен бота
-    const botToken = 'YOUR_TELEGRAM_BOT_TOKEN';
+    const botToken = '7475830625:AAGuEX6UxNLwHe-yIgtyq1mtkKdKM25lzJs';
     
     // Взаємодія з Telegram API
     const apiUrl = `https://api.telegram.org/bot${botToken}/getUpdates`;
