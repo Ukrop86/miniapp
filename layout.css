@@ -11,10 +11,12 @@
     text-align: center;
     position: relative;
     color: #ffffff;
+    overflow: hidden;
     border: 2px solid #ffcc00;
     font-size: 22px;
     font-weight: normal;
     padding-bottom: 30px;
+  
 }
 
 .box:last-child {
@@ -93,14 +95,20 @@
     margin-bottom: 20px;
     background-color: #444851;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
-    cursor: pointer;
-    transition: all 0.3s ease;
+    
+    
     text-align: center;
     position: relative;
     color: #ffffff;
     font-size: 22px;
     font-weight: normal;
     padding-bottom: 30px;
+    overflow-y: auto;
     border: 2px solid #ffcc00;
+  
+    
 }
-
+/* Приховати полосу прокрутки для WebKit-браузерів */
+.tab-content::-webkit-scrollbar {
+    display: none; /* Приховує скролбар */
+}
