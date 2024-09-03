@@ -14,48 +14,39 @@ const firebaseConfig = {
 const app = firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
-window.onload = function() {
-    const tg = window.Telegram.WebApp;
-    tg.ready();
+// main.js
 
-    // Display Telegram username and save to Firebase
-    const userLogin = tg.initDataUnsafe.user.username;
-
-    if (userLogin) {
-        document.getElementById('user-login').textContent = `Ваш логін Telegram: ${userLogin}`;
-        
-        // Save the Telegram username to Firebase
-        database.ref('users/' + userLogin).set({
-            telegramLogin: userLogin,
-            timestamp: Date.now()
+// Функція для отримання даних користувача
+function getUserInfo() {
+    // Замість 'YOUR_TELEGRAM_BOT_TOKEN' використовуйте ваш токен бота
+    const botToken = 'YOUR_TELEGRAM_BOT_TOKEN';
+    
+    // Взаємодія з Telegram API
+    const apiUrl = `https://api.telegram.org/bot${botToken}/getUpdates`;
+    
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            if (data.ok) {
+                // Витягуємо перший результат для простоти
+                const userInfo = data.result[0].message.from;
+                displayUserInfo(userInfo);
+            } else {
+                console.error('Error fetching user info:', data.description);
+                document.getElementById('login-info').textContent = 'Не вдалося завантажити інформацію';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('login-info').textContent = 'Не вдалося завантажити інформацію';
         });
-    } else {
-        document.getElementById('user-login').textContent = 'Ваш логін Telegram не знайдено.';
-    }
+}
 
-    // Function to toggle box
-    function toggleBox(box) {
-        const isExpanded = box.classList.contains('expanded');
-        const boxes = document.querySelectorAll('.box');
-        
-        // Collapse all boxes
-        boxes.forEach(b => b.classList.remove('expanded'));
-        
-        // Expand the clicked box if it was not already expanded
-        if (!isExpanded) {
-            box.classList.add('expanded');
-        }
-    }
+// Функція для відображення інформації про користувача
+function displayUserInfo(user) {
+    const loginInfoElement = document.getElementById('login-info');
+    loginInfoElement.textContent = `Вітаємо, ${user.first_name} ${user.last_name || ''}`;
+}
 
-    // Function to update count
-    function updateCount(event, type) {
-        event.stopPropagation(); // Prevent the click event from affecting the box
-        const countSpan = event.target.nextElementSibling;
-        let count = parseInt(countSpan.textContent, 10);
-        countSpan.textContent = count + 1;
-    }
-
-    // Expose functions to global scope
-    window.toggleBox = toggleBox;
-    window.updateCount = updateCount;
-};
+// Викликаємо функцію для отримання даних користувача
+getUserInfo();
