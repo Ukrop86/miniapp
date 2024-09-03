@@ -15,7 +15,11 @@
     font-size: 22px;
     font-weight: normal;
     padding-bottom: 30px;
-    
+    transition: background-color 0.3s ease;
+}
+
+.box:hover {
+    background-color: #555b60;
 }
 
 .box:last-child {
