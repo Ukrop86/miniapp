@@ -1,1 +1,3 @@
-# miniapp.github.io
+# MyNodeProject
+
+This is a simple Node.js project.
