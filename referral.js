@@ -14,55 +14,53 @@ const firebaseConfig = {
 const app = firebase.initializeApp(firebaseConfig);
 const database = firebase.database(app);
 
-// Функція для збереження логіну Telegram
-function saveTelegramLogin(userId, telegramLogin) {
-    if (!userId || !telegramLogin) {
-        alert('Please enter both User ID and Telegram Login');
-        return;
+function showTab(tabId) {
+    const tabs = document.querySelectorAll('.tab-content');
+    tabs.forEach(tab => {
+        if (tab.id === tabId) {
+            tab.style.display = 'block';
+        } else {
+            tab.style.display = 'none';
+        }
+    });
+}
+
+// Initialize Telegram Web App
+window.onload = function() {
+    const tg = window.Telegram.WebApp;
+    tg.ready();
+
+    // Display Telegram username
+    const userLogin = tg.initDataUnsafe.user.username;
+    if (userLogin) {
+        document.getElementById('user-login').textContent = `Ваш логін Telegram: ${userLogin}`;
+    } else {
+        document.getElementById('user-login').textContent = 'Ваш логін Telegram не знайдено.';
     }
 
-    // Зберігаємо дані в Firebase
-    database.ref('referrals/' + userId).set({
-        telegramLogin: telegramLogin
-    }, (error) => {
-        if (error) {
-            alert('Failed to save data');
-        } else {
-            alert('Data saved successfully');
-            loadReferrals(); // Оновлюємо список рефералів
-        }
-    });
-}
+    // Function to load referrals
+    function loadReferrals() {
+        const referralList = document.getElementById('referral-list');
+        referralList.innerHTML = ''; // Clear previous data
 
-// Функція для завантаження рефералів
-function loadReferrals() {
-    const referralList = document.getElementById('referral-list');
-    referralList.innerHTML = ''; // Очищуємо попередні дані
-
-    database.ref('referrals').once('value', (snapshot) => {
-        const referrals = snapshot.val();
-        if (referrals) {
-            for (const userId in referrals) {
-                const telegramLogin = referrals[userId].telegramLogin;
-                const listItem = document.createElement('li');
-                listItem.textContent = `User ID: ${userId}, Telegram Login: ${telegramLogin}`;
-                referralList.appendChild(listItem);
+        // Fetch referrals from Firebase
+        firebase.database().ref('referrals').once('value').then((snapshot) => {
+            const referrals = snapshot.val();
+            if (referrals) {
+                for (const userId in referrals) {
+                    const telegramLogin = referrals[userId].telegramLogin;
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `User ID: ${userId}, Telegram Login: ${telegramLogin}`;
+                    referralList.appendChild(listItem);
+                }
+            } else {
+                referralList.innerHTML = '<li>Рефералів не знайдено</li>';
             }
-        } else {
-            referralList.innerHTML = '<li>No referrals found</li>';
-        }
-    });
-}
+        });
+    }
 
-// Функція для відображення реферального посилання
-function displayReferralLink() {
-    const referralLink = document.getElementById('referral-url');
-    const baseUrl = window.location.href.split('?')[0]; // Витягуємо базову URL
-    referralLink.textContent = baseUrl + '?ref=' + encodeURIComponent('YOUR_REFERRAL_CODE');
-}
-
-// Завантаження рефералів та відображення реферального посилання при завантаженні сторінки
-window.onload = function() {
     loadReferrals();
+};
+
     displayReferralLink();
 };
