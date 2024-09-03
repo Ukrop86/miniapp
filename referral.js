@@ -10,57 +10,52 @@ const firebaseConfig = {
   measurementId: "G-QSR6SB6P8P"
 };
 
-// Ініціалізація Firebase
-const app = firebase.initializeApp(firebaseConfig);
-const database = firebase.database(app);
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
 
-function showTab(tabId) {
-    const tabs = document.querySelectorAll('.tab-content');
-    tabs.forEach(tab => {
-        if (tab.id === tabId) {
-            tab.style.display = 'block';
-        } else {
-            tab.style.display = 'none';
-        }
-    });
-}
-
-// Initialize Telegram Web App
 window.onload = function() {
     const tg = window.Telegram.WebApp;
     tg.ready();
 
-    // Display Telegram username
+    // Display Telegram username and save to Firebase
     const userLogin = tg.initDataUnsafe.user.username;
+
     if (userLogin) {
         document.getElementById('user-login').textContent = `Ваш логін Telegram: ${userLogin}`;
+        
+        // Save the Telegram username to Firebase
+        database.ref('users/' + userLogin).set({
+            telegramLogin: userLogin,
+            timestamp: Date.now()
+        });
     } else {
         document.getElementById('user-login').textContent = 'Ваш логін Telegram не знайдено.';
     }
 
-    // Function to load referrals
-    function loadReferrals() {
-        const referralList = document.getElementById('referral-list');
-        referralList.innerHTML = ''; // Clear previous data
-
-        // Fetch referrals from Firebase
-        firebase.database().ref('referrals').once('value').then((snapshot) => {
-            const referrals = snapshot.val();
-            if (referrals) {
-                for (const userId in referrals) {
-                    const telegramLogin = referrals[userId].telegramLogin;
-                    const listItem = document.createElement('li');
-                    listItem.textContent = `User ID: ${userId}, Telegram Login: ${telegramLogin}`;
-                    referralList.appendChild(listItem);
-                }
-            } else {
-                referralList.innerHTML = '<li>Рефералів не знайдено</li>';
-            }
-        });
+    // Function to toggle box
+    function toggleBox(box) {
+        const isExpanded = box.classList.contains('expanded');
+        const boxes = document.querySelectorAll('.box');
+        
+        // Collapse all boxes
+        boxes.forEach(b => b.classList.remove('expanded'));
+        
+        // Expand the clicked box if it was not already expanded
+        if (!isExpanded) {
+            box.classList.add('expanded');
+        }
     }
 
-    loadReferrals();
-};
+    // Function to update count
+    function updateCount(event, type) {
+        event.stopPropagation(); // Prevent the click event from affecting the box
+        const countSpan = event.target.nextElementSibling;
+        let count = parseInt(countSpan.textContent, 10);
+        countSpan.textContent = count + 1;
+    }
 
-    displayReferralLink();
+    // Expose functions to global scope
+    window.toggleBox = toggleBox;
+    window.updateCount = updateCount;
 };
