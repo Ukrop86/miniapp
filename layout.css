@@ -95,7 +95,7 @@
     margin-bottom: 20px;
     background-color: #444851;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
-    
+    -webkit-tap-highlight-color: transparent;
     
     text-align: center;
     position: relative;
