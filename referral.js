@@ -1,10 +1,5 @@
-// Імпортуйте функції, які вам потрібні з SDK
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js";
-import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.0.2/firebase-database.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.0.2/firebase-analytics.js";
-
 // Конфігурація Firebase для вашого веб-додатку
-var firebaseConfig = {
+const firebaseConfig = {
   apiKey: "AIzaSyBJSrSzrShQWN3CDYVVMYjzibQ1FgTDVO8",
   authDomain: "referals-b30ae.firebaseapp.com",
   databaseURL: "https://referals-b30ae-default-rtdb.firebaseio.com",
@@ -17,18 +12,22 @@ var firebaseConfig = {
 
 // Ініціалізуйте Firebase
 firebase.initializeApp(firebaseConfig);
-var database = firebase.database();
+const db = firebase.database();
 
 // Функція для збереження даних користувача у Firebase
 function saveUserData(userId, referralLink) {
-    database.ref('users/' + userId).set({
+    db.ref('users/' + userId).set({
         telegramId: userId,
         referralLink: referralLink
+    }).then(() => {
+        console.log('Дані користувача успішно збережені');
+    }).catch((error) => {
+        console.error('Помилка при збереженні даних користувача:', error);
     });
 }
 
 // Функція для відображення реферального посилання
-async function displayReferralLink() {
+function displayReferralLink() {
     // Отримати ID користувача Telegram з параметрів URL або з іншого джерела
     const params = new URLSearchParams(window.location.search);
     const userId = params.get('id'); // Отримати ID з URL параметрів
@@ -38,7 +37,7 @@ async function displayReferralLink() {
         document.getElementById('referral-link').innerText = `Ваше реферальне посилання: ${referralLink}`;
 
         // Збережіть дані користувача у Firebase
-        await saveUserData(userId, referralLink);
+        saveUserData(userId, referralLink);
     } else {
         console.error('Не вдалося отримати ID користувача');
     }
